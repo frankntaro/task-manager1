@@ -1,11 +1,12 @@
 <?php
-$host = getenv('MYSQL_HOST') ?: 'localhost';
+$host = getenv('MYSQL_HOST') ?: 'db'; // fallback should be 'db', not 'localhost'
 $user = getenv('MYSQL_USER') ?: 'root';
 $password = getenv('MYSQL_PASSWORD') ?: '';
 $database = getenv('MYSQL_DB') ?: 'task_manager';
 
 try {
-    $pdo = new PDO("mysql:host=$host", $user, $password);
+    $dsn = "mysql:host=$host;port=3306"; // force TCP/IP connection
+    $pdo = new PDO($dsn, $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Create database if not exists

@@ -271,3 +271,56 @@ h2{
     border-radius: 4px;
     text-decoration: none;
 }
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .task-actions {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .task-actions a {
+        margin: 5px 5px 0 0;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea,
+    .submit-btn,
+    .add-btn,
+    .view-all-btn,
+    .download-btn,
+    .back-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .view-existing-tasks {
+        width: 90%;
+        right: 5%;
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1, h2 {
+        font-size: 1.4rem;
+    }
+
+    .task-title {
+        font-size: 1rem;
+    }
+
+    .file-preview {
+        max-width: 100%;
+        height: auto;
+    }
+}

@@ -1,12 +1,14 @@
 <?php
 // Database connection
-$host = getenv('MYSQL_HOST') ?: 'localhost';
+$host = getenv('MYSQL_HOST') ?: 'db'; // Updated fallback from 'localhost' to 'db'
 $user = getenv('MYSQL_USER') ?: 'root';
 $password = getenv('MYSQL_PASSWORD') ?: '';
 $database = getenv('MYSQL_DB') ?: 'task_manager';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$database", $user, $password);
+    // Added port to enforce TCP/IP connection
+    $dsn = "mysql:host=$host;port=3306;dbname=$database";
+    $pdo = new PDO($dsn, $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Fetch all tasks
@@ -30,7 +32,6 @@ try {
         
         <a href="create.php" class="add-btn">Add New Task</a>
 
-        
         <ul class="task-list">
             <?php foreach ($tasks as $task): ?>
             <li class="task-item">
@@ -49,12 +50,9 @@ try {
                     <a href="edit.php?id=<?= $task['id'] ?>" class="edit-btn">Edit</a>
                     <a href="delete.php?id=<?= $task['id'] ?>" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
                 </div>
-            
-
             </li>
             <?php endforeach; ?>
         </ul>
-
     </div>
 </body>
 </html>
