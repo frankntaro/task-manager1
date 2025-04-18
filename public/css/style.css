@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap');
+:root{
+    --yellow:orange;
+    --bg:#0B1218;
+    --bg-body:#131D28;
+    --black:#000;
+    --white:#fff;
+    --light-bg:#eee;
+    --border-bold:.5rem solid var(--black);
+    --border-light: .2rem solid var(--black);
+}
+ body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-body);
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+input{
+    border: 1px solid black;
+    border-radius: 2px;
+    
+}
+
+
+h1 {
+    text-align: center;
+    color:blue;
+}
+h2{
+    text-align: center;
+    color: black;
+
+
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+}
+
+.task-item {
+    background: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-item:hover {
+    background: #eee;
+}
+
+.task-title {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.task-actions a {
+    text-decoration: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
+.edit-btn {
+    background: #3498db;
+}
+
+.delete-btn {
+    background: #e74c3c;
+}
+
+.add-btn {
+    display: inline-block;
+    background: #2ecc71;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.box{
+    border: 5px solid black;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.form-group textarea {
+    height: 100px;
+}
+
+.submit-btn {
+    background:mediumseagreen;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: blue;
+}
+
+.file-preview {
+    max-width: 200px;
+    max-height: 200px;
+    margin-top: 10px;
+}
+
+.uploaded-file {
+    display: block;
+    margin-top: 10px;
+    color: #3498db;
+}
+.credit{
+    text-align: center;
+    background-color: var(--bg-body);
+    padding: 1rem;
+    font-size: 0.8rem;
+    color: var(--white);
+
+}
+.credit span{
+    color: var(--yellow);
+
+}
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+/* View Task Specific Styles */
+.task-details {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.task-meta {
+    color: #666;
+    font-size: 0.9em;
+    margin: 1rem 0;
+}
+
+.task-description {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.attachment-preview {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #95a5a6;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.view-btn {
+    background: #2ecc71;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-left: 5px;
+}
+
+
+
+
+
+
+
+.view-existing-tasks {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-width: 300px;
+    z-index: 1000;
+}
+
+.view-existing-tasks h3 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.task-list-mini {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item-mini {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.task-item-mini:last-child {
+    border-bottom: none;
+}
+
+.view-all-btn {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    background: #3498db;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+}
