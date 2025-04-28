@@ -1,6 +1,11 @@
 # Use official PHP image with Apache
 FROM php:8.2-apache
 
+# Install system dependencies and PostgreSQL client library
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install necessary PHP extensions for PostgreSQL
 RUN docker-php-ext-install pdo pdo_pgsql
 
