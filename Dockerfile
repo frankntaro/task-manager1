@@ -1,5 +1,7 @@
 # Use official PHP image with Apache
 FROM php:8.2-apache
+# Set Apache ServerName (suppresses the warning)
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Install system dependencies and PostgreSQL client library
 RUN apt-get update && apt-get install -y \
