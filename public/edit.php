@@ -4,15 +4,10 @@ if (!isset($_GET['id'])) {
     exit();
 }
 
-// Database connection
-$host = getenv('MYSQL_HOST') ?: 'db'; // Docker service name
-$user = getenv('MYSQL_USER') ?: 'root';
-$password = getenv('MYSQL_PASSWORD') ?: '';
-$database = getenv('MYSQL_DB') ?: 'task_manager';
-
+// Database connection using the DATABASE_URL environment variable
+$dsn = getenv('DATABASE_URL');
 try {
-    $dsn = "mysql:host=$host;port=3306;dbname=$database"; // ensure port is set
-    $pdo = new PDO($dsn, $user, $password);
+    $pdo = new PDO($dsn);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Fetch task
@@ -66,6 +61,7 @@ try {
     die("Database error: " . $e->getMessage());
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

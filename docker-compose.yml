@@ -9,11 +9,7 @@ services:
       - ./public:/var/www/html
       - ./public/uploads:/var/www/html/uploads
     environment:
-      - MYSQL_HOST=db  # Use the service name 'db' (Docker's internal DNS)
-      - MYSQL_PORT=3306  # Explicitly define the port
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=secret
-      - MYSQL_DB=task_manager
+      - DATABASE_URL=${DATABASE_URL}  # Use the DATABASE_URL environment variable
     depends_on:
       db:
         condition: service_healthy  # Wait for DB to be ready
@@ -21,23 +17,20 @@ services:
       - app-network
 
   db:
-    image: mysql:8.0
+    image: postgres:13
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=task_manager
-      - MYSQL_ROOT_HOST=%  # Allow root access from any host
+      - POSTGRES_DB=task_manager
+      - POSTGRES_USER=your_user
+      - POSTGRES_PASSWORD=your_password
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psecret"]
+      test: ["CMD", "pg_isready", "-U", "your_user"]
       interval: 5s
       timeout: 10s
       retries: 5
     networks:
       - app-network
-    command: --default-authentication-plugin=mysql_native_password  # Fix auth issues
-    # Optional: Explicitly bind MySQL to all interfaces
-    # command: --bind-address=0.0.0.0 --default-authentication-plugin=mysql_native_password
 
 volumes:
   db_data:

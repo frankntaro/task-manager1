@@ -1,8 +1,8 @@
 # Use official PHP image with Apache
 FROM php:8.2-apache
 
-# Install necessary PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql
+# Install necessary PHP extensions for PostgreSQL
+RUN docker-php-ext-install pdo pdo_pgsql
 
 # Enable Apache rewrite module
 RUN a2enmod rewrite
