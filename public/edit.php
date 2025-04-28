@@ -5,60 +5,73 @@ if (!isset($_GET['id'])) {
 }
 
 // Database connection using the DATABASE_URL environment variable
-$dsn = getenv('DATABASE_URL');
-try {
-    $pdo = new PDO($dsn);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$databaseUrl = getenv('DATABASE_URL'); // This will use the DATABASE_URL provided by Render
+if ($databaseUrl) {
+    // Parse the database URL into components
+    $dbParts = parse_url($databaseUrl);
 
-    // Fetch task
-    $stmt = $pdo->prepare("SELECT * FROM tasks WHERE id = ?");
-    $stmt->execute([$_GET['id']]);
-    $task = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Extract necessary parts from the URL
+    $dbHost = $dbParts['host'];
+    $dbPort = $dbParts['port'] ?? 5432; // Default to 5432 if no port is provided
+    $dbName = ltrim($dbParts['path'], '/'); // Remove leading slash
+    $dbUser = $dbParts['user'];
+    $dbPassword = $dbParts['pass'];
 
-    if (!$task) {
-        header('Location: index.php');
-        exit();
-    }
+    try {
+        // Create the PDO connection string
+        $pdo = new PDO("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $title = $_POST['title'];
-        $description = $_POST['description'];
-        $filePath = $task['file_path'];
-        $deleteFile = isset($_POST['delete_file']);
+        // Fetch task
+        $stmt = $pdo->prepare("SELECT * FROM tasks WHERE id = ?");
+        $stmt->execute([$_GET['id']]);
+        $task = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Handle file deletion
-        if ($deleteFile && $filePath) {
-            if (file_exists($filePath)) {
-                unlink($filePath);
-            }
-            $filePath = null;
+        if (!$task) {
+            header('Location: index.php');
+            exit();
         }
 
-        // Handle new file upload
-        if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-            // Delete old file if exists
-            if ($filePath && file_exists($filePath)) {
-                unlink($filePath);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = $_POST['title'];
+            $description = $_POST['description'];
+            $filePath = $task['file_path'];
+            $deleteFile = isset($_POST['delete_file']);
+
+            // Handle file deletion
+            if ($deleteFile && $filePath) {
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+                $filePath = null;
             }
 
-            $uploadDir = 'uploads/';
-            $fileName = uniqid() . '_' . basename($_FILES['file']['name']);
-            $targetPath = $uploadDir . $fileName;
+            // Handle new file upload
+            if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+                // Delete old file if exists
+                if ($filePath && file_exists($filePath)) {
+                    unlink($filePath);
+                }
 
-            if (move_uploaded_file($_FILES['file']['tmp_name'], $targetPath)) {
-                $filePath = $targetPath;
+                $uploadDir = 'uploads/';
+                $fileName = uniqid() . '_' . basename($_FILES['file']['name']);
+                $targetPath = $uploadDir . $fileName;
+
+                if (move_uploaded_file($_FILES['file']['tmp_name'], $targetPath)) {
+                    $filePath = $targetPath;
+                }
             }
+
+            // Update task
+            $stmt = $pdo->prepare("UPDATE tasks SET title = ?, description = ?, file_path = ? WHERE id = ?");
+            $stmt->execute([$title, $description, $filePath, $_GET['id']]);
+
+            header('Location: index.php');
+            exit();
         }
-
-        // Update task
-        $stmt = $pdo->prepare("UPDATE tasks SET title = ?, description = ?, file_path = ? WHERE id = ?");
-        $stmt->execute([$title, $description, $filePath, $_GET['id']]);
-
-        header('Location: index.php');
-        exit();
+    } catch (PDOException $e) {
+        die("Database error: " . $e->getMessage());
     }
-} catch (PDOException $e) {
-    die("Database error: " . $e->getMessage());
 }
 ?>
 
